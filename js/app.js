@@ -108,17 +108,49 @@ function toneFor(text) {
   return BRAND_TONES[h % BRAND_TONES.length];
 }
 
-function buildVisual(perfume, className) {
+/**
+ * Visual do perfume: a foto oficial quando existe; caso contrário, um
+ * fundo mineral com a inicial da marca (nunca uma imagem de outro produto).
+ */
+function buildVisual(perfume, className, { eager = false } = {}) {
   const visual = document.createElement("div");
   visual.className = className;
+
+  if (perfume.image) {
+    const img = document.createElement("img");
+    img.className = "perfume-photo";
+    img.src = perfume.image;
+    img.alt = `${perfume.brand} ${perfume.name}`;
+    img.loading = eager ? "eager" : "lazy";
+    img.decoding = "async";
+    img.width = 900;
+    img.height = 900;
+    // Se a foto falhar, cai para o fundo mineral em vez de deixar um vazio.
+    img.addEventListener("error", () => {
+      img.remove();
+      visual.appendChild(buildInitial(perfume));
+      applyTone(visual, perfume);
+    });
+    visual.appendChild(img);
+    return visual;
+  }
+
+  applyTone(visual, perfume);
+  visual.appendChild(buildInitial(perfume));
+  return visual;
+}
+
+function applyTone(visual, perfume) {
   const [a, b] = toneFor(perfume.brand || perfume.name);
   visual.style.background = `linear-gradient(150deg, ${a}, ${b})`;
+}
+
+function buildInitial(perfume) {
   const initial = document.createElement("span");
   initial.className = "perfume-initial";
   initial.setAttribute("aria-hidden", "true");
   initial.textContent = (perfume.brand || perfume.name).charAt(0).toUpperCase();
-  visual.appendChild(initial);
-  return visual;
+  return initial;
 }
 
 /* ── Catálogo ─────────────────────────────────────────────── */
@@ -127,6 +159,7 @@ const state = {
   perfumes: [],
   query: "",
   brand: "",
+  family: "",
   price: "",
 };
 
@@ -146,7 +179,8 @@ function buildCard(perfume, index) {
     `Ver detalhes de ${perfume.brand} ${perfume.name}`
   );
 
-  const visual = buildVisual(perfume, "perfume-visual");
+  // As primeiras imagens carregam de imediato; o resto sob demanda.
+  const visual = buildVisual(perfume, "perfume-visual", { eager: index < 4 });
   if (perfume.status) {
     const badge = document.createElement("span");
     badge.className = "perfume-status";
@@ -170,6 +204,16 @@ function buildCard(perfume, index) {
   meta.className = "perfume-meta";
   meta.textContent = metaLine(perfume);
 
+  info.append(brand, name, meta);
+
+  // Resumo olfativo: só aparece quando a marca divulga a família.
+  if (perfume.family) {
+    const family = document.createElement("span");
+    family.className = "perfume-family";
+    family.textContent = perfume.family;
+    info.appendChild(family);
+  }
+
   const price = document.createElement("span");
   price.className = "perfume-price";
   price.textContent = perfume.priceFormatted ?? "";
@@ -177,7 +221,7 @@ function buildCard(perfume, index) {
   priceNote.textContent = "à vista · PIX ou TED";
   price.appendChild(priceNote);
 
-  info.append(brand, name, meta, price);
+  info.appendChild(price);
   card.appendChild(info);
 
   card.addEventListener("click", () => openDrawer(perfume));
@@ -202,10 +246,25 @@ function applyFilters() {
   const q = state.query.trim().toLowerCase();
   return state.perfumes.filter((p) => {
     if (q) {
-      const haystack = `${p.brand} ${p.name} ${p.concentration ?? ""} ${p.volume ?? ""}`.toLowerCase();
+      // A busca alcança também família olfativa e notas da pirâmide.
+      const notes = p.notes
+        ? [...(p.notes.top ?? []), ...(p.notes.heart ?? []), ...(p.notes.base ?? [])]
+        : (p.mainNotes ?? []);
+      const haystack = [
+        p.brand,
+        p.name,
+        p.concentration,
+        p.volume,
+        p.family,
+        ...notes,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
       if (!haystack.includes(q)) return false;
     }
     if (state.brand && p.brand !== state.brand) return false;
+    if (state.family && p.family !== state.family) return false;
     if (state.price) {
       const [min, max] = state.price.split("-").map(Number);
       if (p.price === undefined || p.price < min || p.price >= max) return false;
@@ -223,7 +282,7 @@ function renderCatalog() {
   grid.replaceChildren(...results.map((p, i) => buildCard(p, i)));
   observeReveals(grid);
 
-  const filtering = state.query || state.brand || state.price;
+  const filtering = state.query || state.brand || state.family || state.price;
   empty.hidden = results.length > 0;
   grid.hidden = results.length === 0;
   $("#filter-clear").hidden = !filtering;
@@ -239,6 +298,7 @@ function renderCatalog() {
 function initCatalogTools() {
   const search = $("#search-input");
   const brandSel = $("#filter-brand");
+  const familySel = $("#filter-family");
   const priceSel = $("#filter-price");
 
   let debounce;
@@ -254,15 +314,20 @@ function initCatalogTools() {
     state.brand = brandSel.value;
     renderCatalog();
   });
+  familySel.addEventListener("change", () => {
+    state.family = familySel.value;
+    renderCatalog();
+  });
   priceSel.addEventListener("change", () => {
     state.price = priceSel.value;
     renderCatalog();
   });
 
   const clear = () => {
-    state.query = state.brand = state.price = "";
+    state.query = state.brand = state.family = state.price = "";
     search.value = "";
     brandSel.value = "";
+    familySel.value = "";
     priceSel.value = "";
     renderCatalog();
   };
@@ -270,17 +335,28 @@ function initCatalogTools() {
   $("#empty-clear").addEventListener("click", clear);
 }
 
-function populateBrandFilter() {
-  const brandSel = $("#filter-brand");
-  const brands = [...new Set(state.perfumes.map((p) => p.brand).filter(Boolean))].sort(
-    (a, b) => a.localeCompare(b, "pt-BR")
-  );
-  for (const b of brands) {
-    const opt = document.createElement("option");
-    opt.value = b;
-    opt.textContent = b;
-    brandSel.appendChild(opt);
-  }
+/** Popula os selects a partir dos dados reais — nada é fixo no HTML. */
+function populateFilters() {
+  const fill = (sel, values) => {
+    for (const v of values) {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      sel.appendChild(opt);
+    }
+  };
+  const unique = (key) =>
+    [...new Set(state.perfumes.map((p) => p[key]).filter(Boolean))].sort((a, b) =>
+      a.localeCompare(b, "pt-BR")
+    );
+
+  fill($("#filter-brand"), unique("brand"));
+
+  const families = unique("family");
+  const familyGroup = $("#filter-family").closest(".filter-group");
+  // Sem famílias na base, o filtro simplesmente não existe.
+  if (families.length) fill($("#filter-family"), families);
+  else familyGroup.hidden = true;
 }
 
 async function initCatalog() {
@@ -288,7 +364,7 @@ async function initCatalog() {
   renderSkeletons(grid);
   const { perfumes, source } = await loadCatalog();
   state.perfumes = perfumes;
-  populateBrandFilter();
+  populateFilters();
   renderCatalog();
 
   if (source === "fallback") {
@@ -297,6 +373,81 @@ async function initCatalog() {
     note.textContent =
       "Exibindo a última seleção conhecida — valores e disponibilidade são confirmados no atendimento.";
     grid.insertAdjacentElement("afterend", note);
+  }
+}
+
+/* ── Perfil olfativo ──────────────────────────────────────── */
+
+function buildNoteTier(label, notes) {
+  const tier = document.createElement("div");
+  tier.className = "tier";
+
+  const name = document.createElement("span");
+  name.className = "tier-label";
+  name.textContent = label;
+
+  const list = document.createElement("span");
+  list.className = "tier-notes";
+  list.textContent = notes.join(" · ");
+
+  tier.append(name, list);
+  return tier;
+}
+
+/**
+ * Renderiza a pirâmide olfativa quando a marca a divulga, ou a lista de
+ * notas principais quando ela não separa em saída/coração/fundo.
+ * Se não houver nenhum dado, a seção inteira não é exibida.
+ */
+function appendOlfactoryProfile(body, perfume) {
+  const { notes, mainNotes, family, perfumer, source } = perfume;
+  if (!notes && !mainNotes && !family) return;
+
+  body.appendChild(document.createElement("hr")).className = "drawer-divider";
+
+  const label = document.createElement("p");
+  label.className = "drawer-section-label";
+  label.textContent = "Perfil olfativo";
+  body.appendChild(label);
+
+  if (family) {
+    const fam = document.createElement("p");
+    fam.className = "profile-family";
+    fam.textContent = family;
+    body.appendChild(fam);
+  }
+
+  if (notes) {
+    const pyramid = document.createElement("div");
+    pyramid.className = "pyramid";
+    const tiers = [
+      ["Saída", notes.top],
+      ["Coração", notes.heart],
+      ["Fundo", notes.base],
+    ];
+    for (const [tierLabel, list] of tiers) {
+      if (list?.length) pyramid.appendChild(buildNoteTier(tierLabel, list));
+    }
+    body.appendChild(pyramid);
+  } else if (mainNotes?.length) {
+    const pyramid = document.createElement("div");
+    pyramid.className = "pyramid";
+    pyramid.appendChild(buildNoteTier("Notas", mainNotes));
+    body.appendChild(pyramid);
+  }
+
+  if (perfumer) {
+    const nose = document.createElement("p");
+    nose.className = "profile-meta";
+    nose.textContent = `Perfumista: ${perfumer}`;
+    body.appendChild(nose);
+  }
+
+  if (source) {
+    const credit = document.createElement("p");
+    credit.className = "profile-meta profile-source";
+    credit.textContent = `Composição informada por ${source}`;
+    body.appendChild(credit);
   }
 }
 
@@ -312,7 +463,7 @@ function openDrawer(perfume) {
 
   body.replaceChildren();
 
-  body.appendChild(buildVisual(perfume, "drawer-visual"));
+  body.appendChild(buildVisual(perfume, "drawer-visual", { eager: true }));
 
   const brand = document.createElement("p");
   brand.className = "drawer-brand";
@@ -350,6 +501,8 @@ function openDrawer(perfume) {
     note.textContent = "Valor para pagamento à vista (PIX e TED)";
     body.append(price, note);
   }
+
+  appendOlfactoryProfile(body, perfume);
 
   body.appendChild(document.createElement("hr")).className = "drawer-divider";
 

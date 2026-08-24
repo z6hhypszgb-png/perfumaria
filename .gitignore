@@ -1,0 +1,5 @@
+# Fotos originais das marcas, antes da normalização para WebP.
+# Mantidas localmente para reprocessamento; o site usa assets/perfumes/.
+.orig/
+
+.DS_Store

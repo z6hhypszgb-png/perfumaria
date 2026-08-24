@@ -10,6 +10,7 @@
  * Modelo:
  *   Perfume {
  *     id: string
+ *     slug: string            // chave de junção com o perfil olfativo
  *     brand: string
  *     name: string            // nome sem marca nem volumetria
  *     fullName: string        // linha original da planilha
@@ -19,11 +20,19 @@
  *     price?: number          // em reais
  *     priceFormatted?: string
  *     status?: string         // ex.: "NOVO"
+ *     // vindos de fragrances.js (perfil olfativo apurado nos sites oficiais):
+ *     image?: string
+ *     family?: string
+ *     perfumer?: string
+ *     source?: string
+ *     notes?: { top: string[], heart: string[], base: string[] }
+ *     mainNotes?: string[]    // quando a marca não divulga pirâmide
  *   }
  *
  * Nenhum campo é inventado: só existe no modelo o que existe na fonte.
  */
 import { CONFIG } from "./config.js";
+import { FRAGRANCES } from "./fragrances.js";
 
 const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${CONFIG.sheet.id}/gviz/tq?tqx=out:json&gid=${CONFIG.sheet.gid}`;
 const CACHE_KEY = "jgg-catalog-v2";
@@ -72,6 +81,16 @@ function parsePrice(raw) {
   return Number.isFinite(value) ? value : undefined;
 }
 
+/** Normaliza texto em slug: sem acentos, apóstrofos curvos ou pontuação. */
+function slugify(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 const brl = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
@@ -118,8 +137,19 @@ function toPerfume(rawName, rawPrice, rawStatus, index) {
   const status =
     typeof rawStatus === "string" && rawStatus.trim() ? rawStatus.trim() : undefined;
 
+  // Junção com o perfil olfativo apurado nos sites oficiais das marcas.
+  const slug = slugify(`${brand} ${name}`);
+  const profile = FRAGRANCES[slug];
+  if (!profile) {
+    console.info(
+      `Perfil olfativo ausente para "${fullName}". ` +
+        `Adicione a chave "${slug}" em js/fragrances.js.`
+    );
+  }
+
   return {
-    id: `p${index}-${fullName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+    id: `p${index}-${slug}`,
+    slug,
     brand,
     name,
     fullName,
@@ -129,6 +159,7 @@ function toPerfume(rawName, rawPrice, rawStatus, index) {
     price,
     priceFormatted: brl.format(price),
     status,
+    ...profile,
   };
 }
 

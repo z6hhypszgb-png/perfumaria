@@ -501,18 +501,21 @@ button {
 
 .perfume-visual {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: var(--paper);
 }
-.perfume-visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 55%);
+
+.perfume-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-lux);
 }
+.perfume-card:hover .perfume-photo { transform: scale(1.035); }
 .perfume-initial {
   font-family: var(--font-display);
   font-weight: 300;
@@ -559,6 +562,13 @@ button {
   font-size: 0.8rem;
   color: var(--ink-mute);
   letter-spacing: 0.04em;
+}
+.perfume-family {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-top: 0.15rem;
 }
 .perfume-price {
   margin-top: auto;
@@ -904,7 +914,7 @@ button {
 .drawer-body { padding: 0.5rem 2.2rem 2.5rem; }
 
 .drawer-visual {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -912,14 +922,66 @@ button {
   margin-bottom: 1.8rem;
   position: relative;
   overflow: hidden;
+  background: var(--paper);
 }
-.drawer-visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 55%);
+.drawer-visual .perfume-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .drawer-visual .perfume-initial { font-size: 5rem; }
+
+/* ── Pirâmide olfativa ─────────────────────────────────────── */
+.profile-family {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0 0 1.4rem;
+}
+
+.pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.tier {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line-strong);
+}
+/* Recuo progressivo: a pirâmide se estreita da saída ao fundo. */
+.tier:nth-child(2) { margin-left: 0.9rem; }
+.tier:nth-child(3) { margin-left: 1.8rem; }
+
+.tier-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.tier-notes {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.profile-meta {
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+  margin: 1.3rem 0 0;
+  letter-spacing: 0.02em;
+}
+.profile-source { margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.8; }
+
+@media (max-width: 420px) {
+  .tier { grid-template-columns: 1fr; gap: 0.3rem; }
+  .tier:nth-child(2) { margin-left: 0.6rem; }
+  .tier:nth-child(3) { margin-left: 1.2rem; }
+}
 
 .drawer-brand {
   font-size: 0.72rem;
