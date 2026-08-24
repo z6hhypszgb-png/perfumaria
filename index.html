@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>João Gabriel Gomes — Perfumaria além do óbvio</title>
+  <meta name="description" content="Curadoria de perfumaria de nicho: fragrâncias selecionadas a pronta entrega, conteúdo especializado e atendimento pessoal. Uma experiência de alta perfumaria." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="João Gabriel Gomes — Perfumaria além do óbvio" />
+  <meta property="og:description" content="Curadoria de perfumaria de nicho: fragrâncias selecionadas, conteúdo e atendimento pessoal em uma única experiência." />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="João Gabriel Gomes" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="João Gabriel Gomes — Perfumaria além do óbvio" />
+  <meta name="twitter:description" content="Curadoria de perfumaria de nicho: fragrâncias selecionadas, conteúdo e atendimento pessoal." />
+  <!-- Ao publicar, defina a URL canônica do domínio final:
+  <link rel="canonical" href="https://SEU-DOMINIO.com.br/" /> -->
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317161a'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23e9e2d6' text-anchor='middle'%3EJG%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "João Gabriel Gomes — Perfumaria",
+    "sameAs": ["https://www.youtube.com/@Jo%C3%A3oGabrielGomes"]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#catalogo">Ir para o catálogo</a>
+
+  <header class="site-header" id="site-header">
+    <nav class="site-nav" aria-label="Navegação principal">
+      <a class="nav-brand" href="#inicio">João Gabriel Gomes</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menu">
+        <span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#catalogo">Perfumes</a></li>
+        <li><a href="#curadoria">Vídeos</a></li>
+        <li><a href="#pagamento">Pagamento</a></li>
+        <li><a href="#entrega">Entrega</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ══════════ HERO ══════════ -->
+    <section class="hero" aria-label="Apresentação">
+      <div class="hero-scene" aria-hidden="true">
+        <div class="hero-glow hero-glow--amber"></div>
+        <div class="hero-glow hero-glow--stone"></div>
+        <div class="hero-grain"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">Curadoria de alta perfumaria</p>
+        <h1 class="hero-title reveal">Perfumaria além<br /><em>do óbvio.</em></h1>
+        <p class="hero-sub reveal">Perfumaria de nicho, conteúdo, curadoria e acesso a fragrâncias selecionadas em uma única experiência.</p>
+        <div class="hero-ctas reveal">
+          <a class="btn btn--solid" href="#catalogo">Explorar fragrâncias</a>
+          <a class="btn btn--ghost" href="#curadoria">Conhecer a curadoria</a>
+        </div>
+      </div>
+      <div class="hero-scroll-hint" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ══════════ MANIFESTO ══════════ -->
+    <section class="manifesto" aria-label="Manifesto">
+      <p class="manifesto-text reveal">Uma curadoria para quem entende que perfume é <em>mais do que cheiro</em> — é presença, memória e assinatura.</p>
+    </section>
+
+    <!-- ══════════ CATÁLOGO ══════════ -->
+    <section class="catalog section" id="catalogo" aria-label="Catálogo de perfumes">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Pronta entrega</p>
+        <h2 class="section-title">A seleção</h2>
+        <p class="section-sub">Fragrâncias disponíveis agora, com valores para pagamento à vista <span class="nowrap">(PIX e TED)</span>.</p>
+      </div>
+
+      <div class="catalog-tools reveal" role="search">
+        <div class="search-field">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="13.6" y1="13.6" x2="18" y2="18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input type="search" id="search-input" placeholder="Buscar perfume, marca ou concentração" aria-label="Buscar perfume, marca ou concentração" autocomplete="off" />
+        </div>
+        <div class="filters" id="filters" aria-label="Filtros">
+          <div class="filter-group">
+            <label class="filter-label" for="filter-brand">Marca</label>
+            <select id="filter-brand" class="filter-select"><option value="">Todas</option></select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label" for="filter-price">Preço</label>
+            <select id="filter-price" class="filter-select">
+              <option value="">Todos</option>
+              <option value="0-1000">Até R$ 1.000</option>
+              <option value="1000-1500">R$ 1.000 – R$ 1.500</option>
+              <option value="1500-99999">Acima de R$ 1.500</option>
+            </select>
+          </div>
+          <button class="filter-clear" id="filter-clear" hidden>Limpar</button>
+        </div>
+      </div>
+
+      <p class="catalog-count" id="catalog-count" role="status" aria-live="polite"></p>
+
+      <div class="catalog-grid" id="catalog-grid" aria-live="polite">
+        <!-- skeletons enquanto carrega -->
+      </div>
+
+      <div class="catalog-empty" id="catalog-empty" hidden>
+        <p>Nenhuma fragrância encontrada com esses critérios.</p>
+        <button class="btn btn--ghost" id="empty-clear">Limpar busca e filtros</button>
+      </div>
+    </section>
+
+    <!-- ══════════ COMO FUNCIONA ══════════ -->
+    <section class="journey section section--sand" aria-label="Como funciona">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">A experiência</p>
+        <h2 class="section-title">Como funciona</h2>
+      </div>
+      <ol class="journey-steps">
+        <li class="journey-step reveal"><span class="journey-num">01</span><p>Explore a curadoria.</p></li>
+        <li class="journey-step reveal"><span class="journey-num">02</span><p>Conheça cada fragrância.</p></li>
+        <li class="journey-step reveal"><span class="journey-num">03</span><p>Simule sua forma de pagamento.</p></li>
+        <li class="journey-step reveal"><span class="journey-num">04</span><p>Fale diretamente pelo WhatsApp.</p></li>
+        <li class="journey-step reveal"><span class="journey-num">05</span><p>Escolha a modalidade de envio.</p></li>
+      </ol>
+    </section>
+
+    <!-- ══════════ CONTEÚDO & CURADORIA ══════════ -->
+    <section class="videos section" id="curadoria" aria-label="Conteúdo e curadoria">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">O canal</p>
+        <h2 class="section-title">Conteúdo &amp; Curadoria</h2>
+        <p class="section-sub">Resenhas, comparativos e educação olfativa — o mesmo olhar criterioso do canal, agora com acesso direto às fragrâncias.</p>
+      </div>
+      <div class="videos-grid" id="videos-grid"></div>
+      <div class="section-cta reveal">
+        <a class="btn btn--ghost" id="channel-link" href="#" target="_blank" rel="noopener noreferrer">Explorar o canal</a>
+      </div>
+    </section>
+
+    <!-- ══════════ PAGAMENTO ══════════ -->
+    <section class="payment section section--dark" id="pagamento" aria-label="Simulação de pagamento">
+      <div class="payment-inner">
+        <div class="section-head reveal">
+          <p class="section-eyebrow">Condições</p>
+          <h2 class="section-title">Simule seu pagamento</h2>
+          <p class="section-sub">Confira as possibilidades de pagamento e simule diferentes condições antes de concluir sua compra.</p>
+        </div>
+        <ul class="payment-facts reveal">
+          <li><strong>À vista</strong><span>PIX ou TED — valores da seleção</span></li>
+          <li><strong>Cartão de crédito</strong><span>À vista ou parcelado via Mercado Pago, NuvemShop e Infinity Pay</span></li>
+          <li><strong>Taxas</strong><span>Juros e taxas conforme a plataforma escolhida</span></li>
+        </ul>
+        <div class="section-cta reveal">
+          <a class="btn btn--light" id="simulator-link" href="#" target="_blank" rel="noopener noreferrer">Simular pagamento</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ ENTREGA & SEGURANÇA ══════════ -->
+    <section class="shipping section" id="entrega" aria-label="Entrega e segurança">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Do frasco até você</p>
+        <h2 class="section-title">Entrega &amp; Segurança</h2>
+        <p class="section-sub">Cada envio é tratado como parte da experiência: embalagem cuidadosa e modalidades com cobertura de seguro informada.</p>
+      </div>
+      <div class="shipping-grid">
+        <article class="ship-card reveal"><h3>Sedex</h3><p class="ship-cover">Seguro informado de até <strong>R$ 10.000</strong></p></article>
+        <article class="ship-card reveal"><h3>PAC</h3><p class="ship-cover">Seguro informado de até <strong>R$ 4.200</strong></p></article>
+        <article class="ship-card reveal"><h3>Uber</h3><p class="ship-cover">Seguro informado de até <strong>R$ 5.000</strong></p><p class="ship-note">Somente São Paulo Capital. A solicitação do Uber é realizada pelo próprio cliente.</p></article>
+        <article class="ship-card reveal"><h3>JadLog</h3><p class="ship-cover">Seguro informado de até <strong>R$ 1.000</strong></p></article>
+        <article class="ship-card reveal"><h3>Loggi</h3><p class="ship-cover">Seguro informado de até <strong>R$ 1.000</strong></p></article>
+        <article class="ship-card reveal"><h3>Total</h3><p class="ship-cover">Seguro informado de até <strong>R$ 1.000</strong></p></article>
+        <article class="ship-card reveal"><h3>J&amp;T</h3><p class="ship-cover">Seguro informado de até <strong>R$ 1.000</strong></p></article>
+      </div>
+      <p class="shipping-disclaimer reveal">Os limites apresentados correspondem às condições informadas para cada modalidade e podem estar sujeitos às regras, disponibilidade, cobertura e condições específicas da transportadora ou serviço utilizado. Frete com seguro por conta do cliente.</p>
+      <div class="section-cta reveal">
+        <a class="btn btn--ghost" id="shipping-cta" href="#" target="_blank" rel="noopener noreferrer">Consultar opções de envio</a>
+      </div>
+    </section>
+
+    <!-- ══════════ CONTATO ══════════ -->
+    <section class="contact section section--sand" id="contato" aria-label="Contato">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Atendimento pessoal</p>
+        <h2 class="section-title">Uma conversa, não um checkout</h2>
+        <p class="section-sub">Cada fragrância é tratada individualmente. Fale diretamente pelo WhatsApp para confirmar disponibilidade, condições e envio.</p>
+      </div>
+      <div class="section-cta reveal">
+        <a class="btn btn--solid" id="contact-whatsapp" href="#" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-brand">João Gabriel Gomes</p>
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <a id="footer-youtube" href="#" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a id="footer-whatsapp" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a href="#catalogo">Perfumes</a>
+      </nav>
+      <p class="footer-note">Curadoria independente de perfumaria de nicho. Valores para pagamento à vista; disponibilidade confirmada no atendimento.</p>
+    </div>
+  </footer>
+
+  <!-- ══════════ DRAWER DE DETALHES ══════════ -->
+  <div class="drawer-overlay" id="drawer-overlay" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+    <button class="drawer-close" id="drawer-close" aria-label="Fechar detalhes">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="drawer-body" id="drawer-body"><!-- preenchido via JS --></div>
+  </aside>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
