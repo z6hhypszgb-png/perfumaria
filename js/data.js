@@ -54,7 +54,6 @@ const FALLBACK_ROWS = [
   ["Parfums d’Elmar - Zaya 60ml", "R$ 1.380,00", "NOVO"],
   ["Ramon Monegal - Matador 50ml", "R$ 1.150,00", "NOVO"],
   ["Sospiro - Farsa 75ml", "R$ 950,00", "NOVO"],
-  ["Unique’E Luxury - Chocolate Makes Me Happy 100ml", "R$ 1.090,00", "NOVO"],
 ];
 
 /**
